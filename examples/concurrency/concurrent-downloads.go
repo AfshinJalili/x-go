@@ -9,8 +9,8 @@ import (
 )
 
 type Result struct {
-	URL string
-	Size int
+	URL   string
+	Size  int
 	Error error
 }
 
@@ -38,12 +38,11 @@ func fetchURL(url string, results chan<- Result, wg *sync.WaitGroup) {
 	results <- Result{URL: url, Size: len(body)}
 }
 
-
 func ConcurrentDownloads() {
 	urls := []string{
 		"https://downloadly.ir",
-        "https://google.com",
-        "https://github.com",
+		"https://google.com",
+		"https://github.com",
 	}
 
 	results := make(chan Result, len(urls))

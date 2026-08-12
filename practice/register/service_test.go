@@ -3,20 +3,20 @@ package register
 import (
 	"context"
 	"database/sql"
-	"testing"
 	"errors"
+	"testing"
 )
 
-type fakeRepo struct{
-	users map[string]User
-	nextID int64
-	findErr error
+type fakeRepo struct {
+	users     map[string]User
+	nextID    int64
+	findErr   error
 	createErr error
 }
 
 func newFakeRepo() *fakeRepo {
 	return &fakeRepo{
-		users: make(map[string]User),
+		users:  make(map[string]User),
 		nextID: 1,
 	}
 }
@@ -38,7 +38,7 @@ func (r *fakeRepo) Create(ctx context.Context, email string) (User, error) {
 	}
 	u := User{ID: r.nextID, Email: email}
 	r.nextID++
-	r.users[email]= u
+	r.users[email] = u
 	return u, nil
 }
 
@@ -66,7 +66,7 @@ func TestRegister_invalidEmail(t *testing.T) {
 
 func TestResgister_emailTaken(t *testing.T) {
 	repo := newFakeRepo()
-	repo.users["a@b.com"] =User{ID: 9, Email: "a@b.com"}
+	repo.users["a@b.com"] = User{ID: 9, Email: "a@b.com"}
 	svc := &UserService{repo: repo}
 
 	_, err := svc.Register(context.Background(), "a@b.com")
@@ -80,7 +80,7 @@ func TestRegister_lookupFailure(t *testing.T) {
 	repo := newFakeRepo()
 	repo.findErr = boom
 	svc := &UserService{repo: repo}
-	
+
 	_, err := svc.Register(context.Background(), "a@b.com")
 	if !errors.Is(err, boom) {
 		t.Fatalf("err = %v, want %v", err, boom)
@@ -92,7 +92,7 @@ func TestRegister_createFailure(t *testing.T) {
 	repo := newFakeRepo()
 	repo.createErr = boom
 	svc := &UserService{repo: repo}
-	
+
 	_, err := svc.Register(context.Background(), "a@b.com")
 	if !errors.Is(err, boom) {
 		t.Fatalf("err = %v, want %v", err, boom)

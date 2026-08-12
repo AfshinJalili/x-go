@@ -2,10 +2,10 @@ package register
 
 import (
 	"context"
-	"errors"
-	"strings"
 	"database/sql"
+	"errors"
 	"fmt"
+	"strings"
 )
 
 var (
@@ -36,7 +36,7 @@ func (s *UserService) Register(ctx context.Context, email string) (User, error) 
 
 	_, err := s.repo.FindByEmail(ctx, email)
 	if err == nil {
-		return User{}, ErrEmailTaken 
+		return User{}, ErrEmailTaken
 	}
 	if !errors.Is(err, sql.ErrNoRows) {
 		return User{}, fmt.Errorf("find user by email: %w", err)
@@ -44,7 +44,7 @@ func (s *UserService) Register(ctx context.Context, email string) (User, error) 
 
 	user, err := s.repo.Create(ctx, email)
 	if err != nil {
-		return User{}, fmt.Errorf("create user: %w", err) 
+		return User{}, fmt.Errorf("create user: %w", err)
 	}
 
 	return user, nil

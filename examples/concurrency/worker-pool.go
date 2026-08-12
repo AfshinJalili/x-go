@@ -2,21 +2,20 @@ package concurrency
 
 import (
 	"fmt"
-	"time"
 	"sync"
+	"time"
 )
 
 func worker(id int, jobs <-chan int, results chan<- int, wg *sync.WaitGroup) {
 	defer wg.Done()
-	fmt.Printf("Worker %d ready to process jobs\n", id) 
+	fmt.Printf("Worker %d ready to process jobs\n", id)
 
 	for job := range jobs {
-		fmt.Printf("Worker %d processing job %d\n", id, job) 
-		time.Sleep(500 * time.Millisecond) 
+		fmt.Printf("Worker %d processing job %d\n", id, job)
+		time.Sleep(500 * time.Millisecond)
 		results <- job * 2
 	}
 }
-
 
 func WorkerPool() {
 	numJobs := 10
@@ -33,7 +32,6 @@ func WorkerPool() {
 
 	fmt.Println("waiting for 5 sec")
 	time.Sleep(time.Second * 5)
-	
 
 	for j := 1; j <= numJobs; j++ {
 		jobs <- j
@@ -45,9 +43,7 @@ func WorkerPool() {
 		close(results)
 	}()
 
-
 	for result := range results {
 		fmt.Println("result:", result)
 	}
 }
-

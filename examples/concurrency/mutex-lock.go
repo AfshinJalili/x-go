@@ -6,7 +6,7 @@ import (
 )
 
 type Counter struct {
-	mu sync.Mutex
+	mu    sync.Mutex
 	value int
 }
 
@@ -21,7 +21,6 @@ func (c *Counter) Value() int {
 	defer c.mu.Unlock()
 	return c.value
 }
-
 
 func MutexLock() {
 	counter := &Counter{}

@@ -7,21 +7,21 @@ import "fmt"
 // RunGenerator demonstrates the generator pattern.
 // A generator function returns a channel that produces a sequence of values.
 func RunGenerator() {
-    fib := fibonacci(10)
-    for num := range fib {
-        fmt.Println(num)
-    }
+	fib := fibonacci(10)
+	for num := range fib {
+		fmt.Println(num)
+	}
 }
 
 func fibonacci(n int) <-chan int {
-    ch := make(chan int)
-    go func() {
-        defer close(ch)
-        a, b := 0, 1
-        for i := 0; i < n; i++ {
-            ch <- a
-            a, b = b, a+b
-        }
-    }()
-    return ch
+	ch := make(chan int)
+	go func() {
+		defer close(ch)
+		a, b := 0, 1
+		for i := 0; i < n; i++ {
+			ch <- a
+			a, b = b, a+b
+		}
+	}()
+	return ch
 }
