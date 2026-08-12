@@ -1,4 +1,4 @@
-package examples
+package concurrency
 
 import (
 	"fmt"
